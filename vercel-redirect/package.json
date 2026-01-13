@@ -1,0 +1,8 @@
+{
+  "name": "tiktok-archive-redirect",
+  "version": "1.0.0",
+  "description": "Vercel redirect for Telegram bot",
+  "scripts": {
+    "build": "echo 'No build needed'"
+  }
+}

