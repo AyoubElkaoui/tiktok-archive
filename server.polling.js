@@ -13,11 +13,6 @@ const PORT = process.env.PORT || 3000;
 const PUBLIC_URL = process.env.PUBLIC_URL || `http://localhost:${PORT}`;
 const VERCEL_URL = process.env.VERCEL_URL || ""; // Bijv: https://jouw-app.vercel.app
 const BITLY_TOKEN = process.env.BITLY_TOKEN || "";
-const USE_WEBHOOK =
-  process.env.USE_WEBHOOK === "true" ||
-  process.env.RAILWAY_ENVIRONMENT ||
-  false;
-const WEBHOOK_URL = process.env.WEBHOOK_URL || PUBLIC_URL;
 
 // Validatie
 if (!BOT_TOKEN || !YOUR_TELEGRAM_ID) {
@@ -29,10 +24,7 @@ if (!BOT_TOKEN || !YOUR_TELEGRAM_ID) {
 }
 
 // Initialize Telegram Bot
-// Use webhook for Railway/production, polling for local development
-const bot = USE_WEBHOOK
-  ? new TelegramBot(BOT_TOKEN, { webHook: true })
-  : new TelegramBot(BOT_TOKEN, { polling: true });
+const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
 // Initialize Express
 const app = express();
@@ -47,16 +39,6 @@ const upload = multer({
 // Middleware
 app.use(express.json());
 app.use(express.static("public"));
-
-// Setup webhook endpoint if using webhooks
-if (USE_WEBHOOK) {
-  const webhookPath = `/bot${BOT_TOKEN}`;
-  app.post(webhookPath, (req, res) => {
-    bot.processUpdate(req.body);
-    res.sendStatus(200);
-  });
-  console.log(`Webhook mode enabled at path: ${webhookPath}`);
-}
 
 // Bewaar actieve sessies
 const sessions = new Map();
@@ -634,7 +616,7 @@ app.get("/health", (req, res) => {
 });
 
 // Start server
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log("=".repeat(50));
   console.log("📸 Telegram Camera Bot gestart!");
   console.log("=".repeat(50));
@@ -642,34 +624,14 @@ app.listen(PORT, async () => {
   console.log(`Port: ${PORT}`);
   console.log(`Bot Token: ${BOT_TOKEN.substring(0, 10)}...`);
   console.log(`Jouw Telegram ID: ${YOUR_TELEGRAM_ID}`);
-  console.log(`Mode: ${USE_WEBHOOK ? "Webhook" : "Polling"}`);
-
-  // Set webhook if in webhook mode
-  if (USE_WEBHOOK) {
-    try {
-      const webhookPath = `/bot${BOT_TOKEN}`;
-      const fullWebhookUrl = `${WEBHOOK_URL}${webhookPath}`;
-      await bot.setWebHook(fullWebhookUrl);
-      console.log(`Webhook ingesteld op: ${fullWebhookUrl}`);
-    } catch (error) {
-      console.error("Fout bij instellen webhook:", error.message);
-    }
-  }
-
   console.log("=".repeat(50));
   console.log("\n✓ Bot is klaar voor gebruik!");
   console.log("  Stuur /start naar de bot op Telegram om te beginnen.\n");
 });
 
 // Error handling
-if (!USE_WEBHOOK) {
-  bot.on("polling_error", (error) => {
-    console.error("Telegram polling error:", error);
-  });
-}
-
-bot.on("webhook_error", (error) => {
-  console.error("Telegram webhook error:", error);
+bot.on("polling_error", (error) => {
+  console.error("Telegram polling error:", error);
 });
 
 process.on("unhandledRejection", (error) => {

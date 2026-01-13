@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Telegram bot die foto's maakt via camera",
   "main": "server.js",
+  "engines": {
+    "node": ">=16.x"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
@@ -11,7 +14,8 @@
     "telegram",
     "bot",
     "camera",
-    "photo"
+    "photo",
+    "railway"
   ],
   "author": "",
   "license": "ISC",

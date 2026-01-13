@@ -145,7 +145,23 @@ Jouw Telegram ID: 123456789
 
 Voor productie heb je een publieke URL nodig. Opties:
 
-### Optie 1: Ngrok (Snel voor testen)
+### Optie 1: Railway (Aanbevolen - Gratis tier beschikbaar) 🚂
+
+**Nieuwe webhook-compatible versie!** De bot ondersteunt nu automatisch Railway deployment.
+
+1. Ga naar [railway.app](https://railway.app) en maak een account
+2. Klik op "New Project" → "Deploy from GitHub repo"
+3. Selecteer deze repository
+4. Voeg de volgende environment variables toe:
+   - `BOT_TOKEN` = Je bot token van @BotFather
+   - `YOUR_TELEGRAM_ID` = Je Telegram user ID
+   - `USE_WEBHOOK` = `true`
+   - `WEBHOOK_URL` = De Railway URL (wordt automatisch gegenereerd)
+5. Deploy! Railway detecteert automatisch webhook mode.
+
+**Zie [RAILWAY_SETUP.md](RAILWAY_SETUP.md) voor gedetailleerde instructies.**
+
+### Optie 2: Ngrok (Snel voor testen)
 
 1. Download ngrok: https://ngrok.com/
 2. Start je bot: `npm start`
